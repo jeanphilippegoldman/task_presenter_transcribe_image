@@ -1,0 +1,126 @@
+<div class="row skeleton">
+    <div class="col-md-12 col-lg-4">
+      <table>
+        <td>
+          <figure id="#fig_to_transcribe" class="zoom" onmousemove="zoom(event)">
+            <img id="img_to_transcribe" src="">
+          </figure>
+        </td>
+        <td style="padding-left:30px">
+            <form class="form-inline">
+	          <h5>Mot vedette</h5>
+                <input type="text" id="vedette">
+              <h5>Contenu</h5>
+                <textarea rows="5" id="contenu" style="width:100%;"></textarea>
+              <h5> Contenu </h5>
+                <input type="text" id="source">
+              <h5> Autre </h5>
+                <textarea rows="5" id="autre" style="width:100%"></textarea>
+            </form>
+            <button class="btn btn-submit btn-primary btn-sm">Submit transcription!</button>
+        </td></table>
+        <p>Vous avez transcrit <span id="done" class="label label-info"></span> fiches sur
+        <span id="total" class="label label-info"></span>. Merci !</p>
+        <div class="progress progress-striped">
+            <div id="progress" rel="tooltip" title="#" class="progress-bar" style="width: 0%;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+function zoom(e){
+  var zoomer = e.currentTarget;
+  e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+  e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+  x = offsetX/zoomer.offsetWidth*100
+  y = offsetY/zoomer.offsetHeight*100
+  zoomer.style.backgroundPosition = x + '% ' + y + '%';
+}
+
+(function() {
+
+function loadUserProgress() {
+    pybossa.userProgress('transcribe').done(function(data){
+        var pct = Math.round((data.done*100)/data.total);
+        $("#progress").css("width", pct.toString() +"%");
+        $("#progress").attr("title", pct.toString() + "% completed!");
+        $("#progress").tooltip({'placement': 'left'}); 
+        $("#total").text(data.total);
+        $("#done").text(data.done);
+    });
+}
+
+
+pybossa.taskLoaded(function(task, deferred){
+    console.log("taskloaded")
+    console.log(task)
+    if ( !$.isEmptyObject(task) ) {
+        deferred.resolve(task);
+      if (task.state=='completed') {
+            $('#answer').hide();
+            $('#taskcompleted').show();
+        }
+    }
+    else {
+        deferred.resolve(task);
+    }
+});
+
+pybossa.presentTask(function(task, deferred){
+    if ( !$.isEmptyObject(task) ) {
+        loadUserProgress();
+        $("#vedette").val('');
+        $("#contenu").val('');
+        $("#source").val('');
+        $("#autre").val('');
+        $("#task-id").text(task.id);
+        $("#loading").hide();
+      	$("#img_to_transcribe").attr('src',task.info.img_url)
+        document.getElementById("#fig_to_transcribe").style.backgroundImage="url('"+task.info.img_url+"')"
+        $(".btn-submit").off('click').on('click', function(){
+            var answer = {
+            	"vedette":$("#vedette").val(),
+          		"contenu":$("#contenu").val(),
+          		"source":$("#source").val(),
+          		"autre":$("#autre").val()
+          	};
+            $("#viewport_" + task.id).hide();
+            pybossa.saveTask(task.id, answer).done(function(data){
+                deferred.resolve();
+                $("#success").fadeIn();
+                setTimeout(function() { $("#success").fadeOut() }, 2000);
+            })
+        });
+    }
+    else {
+        $(".skeleton").hide();
+    }
+});
+
+pybossa.run('transcribe');
+})();
+</script>
+  <style media="screen">
+    figure.zoom {
+  background-position: 50% 50%;
+  position: relative;
+  margin: 150px auto;
+  border: 5px solid white;
+  box-shadow: -1px 5px 15px black;
+  height: 600px;
+  width: 600px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+figure.zoom img:hover {
+  opacity: 0;
+}
+figure.zoom img {
+  transition: opacity 0.5s;
+  display: block;
+  width: 100%;
+}
+</style>
