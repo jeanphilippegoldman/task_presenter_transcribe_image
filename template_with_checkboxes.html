@@ -1,4 +1,4 @@
-<!-- look for 'transcribe_questionnaire' and replace the 2 occurences with the short name (slug) of your project-->
+<!-- look for 'transcribe' and replace the 2 occurences with the short name (slug) of your project-->
 <div class="row skeleton">
     <div class="col-md-12 col-lg-4">
       <table>
@@ -9,8 +9,9 @@
         </td>
         <td style="padding-left:30px">
             <form class="form-inline">
-            <h5> Mot vedette </h5>
+            <h5> Mot vedette:</h5>
                 <input type="text" id="vedette"></textarea>
+              <br>
 	          <h5>Genre:</h5>
                 <input type="checkbox" id="masculin"> masculin
                 &nbsp;<input type="checkbox" id="feminin"> féminin
@@ -30,7 +31,7 @@
                 &nbsp;<input type="checkbox" id="inconnu"> inconnu
               <br>
               <br>
-            <h5> Source </h5>
+            <h5> Source:</h5>
                 <textarea rows="5" id="source" style="width:100%"></textarea>
             </form>
             <button class="btn btn-submit btn-primary btn-sm">Enregistrer et passer à la fiche suivante</button>
@@ -90,9 +91,14 @@ pybossa.presentTask(function(task, deferred){
         loadUserProgress();
         $("#vedette").val('');
         $("#genre").val('');
+        $("#masculin").prop("checked", false);
+        $("#feminin").prop("checked", false);
         $("#sens").val('');
         $("#emploi").val('');
         $("#contenu").val('');
+        $("#usite").prop("checked", false);
+        $("#connu").prop("checked", false);
+        $("#inconnu").prop("checked", false);
         $("#source").val('');
         $("#task-id").text(task.id);
         $("#loading").hide();
