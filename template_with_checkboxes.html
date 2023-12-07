@@ -7,7 +7,7 @@
             <img id="img_to_transcribe" src="">
           </figure>
         </td>
-        <td style="padding-left:30px">
+        <td style="padding-left:30px; width:400px">
             <form class="form-inline">
             <h5> Mot vedette:</h5>
                 <input type="text" id="vedette"></textarea>
@@ -30,11 +30,15 @@
                 &nbsp;<input type="checkbox" id="connu"> connu
                 &nbsp;<input type="checkbox" id="inconnu"> inconnu
               <br>
+          <h5>Langage:</h5>
+                <input type="checkbox" id="courant"> courant
+                &nbsp;<input type="checkbox" id="familier"> familier
+                &nbsp;<input type="checkbox" id="populaire"> populaire
               <br>
-            <h5> Source:</h5>
-                <textarea rows="5" id="source" style="width:100%"></textarea>
-            </form>
+              <br>
+            <h5> Source:</h5><input type="text" id="source"><br><br>
             <button class="btn btn-submit btn-primary btn-sm">Enregistrer et passer à la fiche suivante</button>
+            </form>
         </td></table>
         <p>Vous avez transcrit <span id="done" class="label label-info"></span> fiches sur
         <span id="total" class="label label-info"></span>. Merci !</p>
@@ -99,6 +103,9 @@ pybossa.presentTask(function(task, deferred){
         $("#usite").prop("checked", false);
         $("#connu").prop("checked", false);
         $("#inconnu").prop("checked", false);
+        $("#courant").prop("checked", false);
+        $("#familier").prop("checked", false);
+        $("#populaire").prop("checked", false);
         $("#source").val('');
         $("#task-id").text(task.id);
         $("#loading").hide();
@@ -107,15 +114,18 @@ pybossa.presentTask(function(task, deferred){
         $(".btn-submit").off('click').on('click', function(){
             var answer = {
             	"vedette":$("#vedette").val(),
-            	"vedette":$("#masculin").val(),
-            	"vedette":$("#feminin").val(),
-            	"vedette":$("#genre").val(),
-          		"contenu":$("#sens").val(),
-          		"source":$("#emploi").val(),
+            	"masculin":$("#masculin").val(),
+            	"feminin":$("#feminin").val(),
+            	"genre":$("#genre").val(),
+          		"sens":$("#sens").val(),
+          		"emploi":$("#emploi").val(),
           		"contenu":$("#contenu").val(),
-          		"source":$("#usite").val(),
-          		"contenu":$("#connu").val(),
-          		"source":$("#inconnu").val(),
+          		"usite":$("#usite").val(),
+          		"connu":$("#connu").val(),
+          		"inconnu":$("#inconnu").val(),
+          		"courant":$("#courant").val(),
+          		"familier":$("#familier").val(),
+          		"populaire":$("#populaire").val(),
           		"source":$("#source").val(),
           	};
             $("#viewport_" + task.id).hide();
