@@ -1,4 +1,4 @@
-# look for 'transcribe' and replace the 2 occurences with the short name (slug) of your project
+<!-- look for 'transcribe_questionnaire' and replace the 2 occurences with the short name (slug) of your project-->
 <div class="row skeleton">
     <div class="col-md-12 col-lg-4">
       <table>
@@ -11,20 +11,25 @@
             <form class="form-inline">
             <h5> Mot vedette </h5>
                 <input type="text" id="vedette"></textarea>
-	          <h5>Genre:
+	          <h5>Genre:</h5>
                 <input type="checkbox" id="masculin"> masculin
-                <input type="checkbox" id="feminin"> féminin
+                &nbsp;<input type="checkbox" id="feminin"> féminin
+              <br>
                 <input type="text" id="genre">
-            </h5>
+              <br>
+              <br>
             <h5>Sens: <input type="text" id="sens"></h5>
             <h5>Emploi: <input type="text" id="emploi"></h5>
-            <h5> Contenu </h5>
+                        <br>
+
+            <h5> Contenu: </h5>
                 <textarea rows="5" id="contenu" style="width:100%"></textarea>
-	          <h5>Ce mot est:
+          <h5>Ce mot est:</h5>
                 <input type="checkbox" id="usite"> usité
-                <input type="checkbox" id="connu"> connu
-                <input type="checkbox" id="inconnu"> inconnu
-            </h5>
+                &nbsp;<input type="checkbox" id="connu"> connu
+                &nbsp;<input type="checkbox" id="inconnu"> inconnu
+              <br>
+              <br>
             <h5> Source </h5>
                 <textarea rows="5" id="source" style="width:100%"></textarea>
             </form>
@@ -54,7 +59,7 @@ function zoom(e){
 (function() {
 
 function loadUserProgress() {
-    pybossa.userProgress('transcribe').done(function(data){
+    pybossa.userProgress('transcribe_questionnaire').done(function(data){
         var pct = Math.round((data.done*100)/data.total);
         $("#progress").css("width", pct.toString() +"%");
         $("#progress").attr("title", pct.toString() + "% completed!");
@@ -120,7 +125,7 @@ pybossa.presentTask(function(task, deferred){
     }
 });
 
-pybossa.run('transcribe');
+pybossa.run('transcribe_questionnaire');
 })();
 </script>
   <style media="screen">
